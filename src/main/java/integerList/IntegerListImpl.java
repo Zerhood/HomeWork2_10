@@ -1,25 +1,25 @@
+package integerList;
+
 import exceptions.ArrayIndexOutOfBoundsEx;
 import exceptions.NoSuchElementEx;
 
-import java.util.NoSuchElementException;
-
-public class StringListImpl implements StringList {
-    private String[] arrays;
+public class IntegerListImpl implements IntegerList {
+    private Integer[] arrays;
     private final int initialCapacity = 10;
     private int size;
 
-    public StringListImpl() {
-        this.arrays = new String[initialCapacity];
+    public IntegerListImpl() {
+        this.arrays = new Integer[initialCapacity];
         size = 0;
     }
 
-    public StringListImpl(int capacity) {
-        this.arrays = new String[capacity];
+    public IntegerListImpl(int capacity) {
+        this.arrays = new Integer[capacity];
         size = 0;
     }
 
     @Override
-    public String add(String item) {
+    public Integer add(Integer item) {
         if (arrays.length == size()) {
             arrays = upSizeArray(arrays);
         }
@@ -34,7 +34,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String add(int index, String item) {
+    public Integer add(int index, Integer item) {
         if (index < 0 || index > arrays.length) {
             throw new ArrayIndexOutOfBoundsEx("Индекс за пределами массива");
         }
@@ -50,7 +50,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String set(int index, String item) {
+    public Integer set(int index, Integer item) {
         if (index >= 0 && index <= arrays.length) {
             arrays[index] = item;
         } else {
@@ -60,7 +60,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String remove(String item) {
+    public Integer remove(Integer item) {
         int indexDeleteItem = -1;
         boolean isElement = true;
         for (int i = 0; i < arrays.length; i++) {
@@ -81,11 +81,11 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String remove(int index) {
+    public Integer remove(int index) {
         if (index < 0 || index > arrays.length) {
             throw new NoSuchElementEx("Элемент отсутствует!");
         }
-        String out = "";
+        Integer out = 0;
         int indexDeleteItem = -1;
         for (int i = 0; i < arrays.length; i++) {
             if (i == index && arrays[i] != null) {
@@ -102,18 +102,17 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public boolean contains(String item) {
+    public boolean contains(Integer item) {
         boolean result = false;
-        for (int i = 0; i < arrays.length; i++) {
-            if (arrays[i] == item) {
-                result = true;
-            }
+        int i = binarySearch(arrays, item);
+        if (i != -1) {
+            result = true;
         }
         return result;
     }
 
     @Override
-    public int indexOf(String item) {
+    public int indexOf(Integer item) {
         int result = -1;
         for (int i = 0; i < arrays.length; i++) {
             if (arrays[i] == item) {
@@ -124,18 +123,19 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public int lastIndexOf(String item) {
+    public int lastIndexOf(Integer item) {
         int result = -1;
         for (int i = arrays.length - 1; i >= 0; i--) {
             if (arrays[i] == item) {
                 result = i;
+                break;
             }
         }
         return result;
     }
 
     @Override
-    public String get(int index) {
+    public Integer get(int index) {
         if (index >= 0 && index <= arrays.length) {
             return arrays[index];
         } else {
@@ -144,7 +144,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public boolean equals(StringList otherList) {
+    public boolean equals(IntegerList otherList) {
         if (otherList == null) {
             throw new NullPointerException();
         }
@@ -168,7 +168,7 @@ public class StringListImpl implements StringList {
     @Override
     public boolean isEmpty() {
         boolean result = true;
-        for (String s : arrays) {
+        for (Integer s : arrays) {
             if (s != null) {
                 result = false;
                 break;
@@ -186,16 +186,16 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String[] toArray() {
-        String[] out = new String[size()];
+    public Integer[] toArray() {
+        Integer[] out = new Integer[size()];
         for (int i = 0; i < out.length; i++) {
             out[i] = arrays[i];
         }
         return out;
     }
 
-    private String[] copyArrayToShiftRight(int index, String[] in) {
-        String[] out = new String[in.length + 2];
+    private Integer[] copyArrayToShiftRight(int index, Integer[] in) {
+        Integer[] out = new Integer[in.length + 2];
         for (int i = 0; i < arrays.length; i++) {
             if (i < index) {
                 out[i] = arrays[i];
@@ -206,7 +206,7 @@ public class StringListImpl implements StringList {
         return out;
     }
 
-    private String[] copyArrayToShiftLeft(int index, String[] in) {
+    private Integer[] copyArrayToShiftLeft(int index, Integer[] in) {
         for (int i = index; i < in.length - 1; i++) {
             in[i] = in[i + 1];
             in[i + 1] = null;
@@ -214,12 +214,44 @@ public class StringListImpl implements StringList {
         return in;
     }
 
-    private String[] upSizeArray(String[] in) {
+    private Integer[] upSizeArray(Integer[] in) {
         int newSize = in.length + in.length / 2;
-        String[] out = new String[newSize];
+        Integer[] out = new Integer[newSize];
         for (int i = 0; i < in.length; i++) {
             out[i] = in[i];
         }
         return out;
+    }
+
+    private int binarySearch(Integer[] in, int i) {
+        sortInsertion(in);
+        int index = -1;
+        int low = 0;
+        int high = size();
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (in[mid] < i) {
+                low = mid + 1;
+            } else if (in[mid] > i) {
+                high = mid - 1;
+            } else if (in[mid] == i) {
+                index = mid;
+                break;
+            }
+        }
+        return index;
+    }
+
+    private void sortInsertion(Integer[] arr) {
+        for (int i = 1; i < size(); i++) {
+            int temp = arr[i];
+            int j = i;
+            while (j > 0 && arr[j - 1] >= temp) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            arr[j] = temp;
+        }
     }
 }

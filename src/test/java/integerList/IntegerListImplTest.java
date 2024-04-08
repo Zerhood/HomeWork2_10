@@ -1,28 +1,27 @@
+package integerList;
+
 import exceptions.ArrayIndexOutOfBoundsEx;
 import exceptions.NoSuchElementEx;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("тест класса StringListImpl")
-public class StringListImplTest {
-    private StringListImpl out;
-    private String[] testArray;
-    private final String expected = "test";
+public class IntegerListImplTest {
+    private IntegerListImpl out;
+    private final Integer expected = 5;
 
     @BeforeEach
     public void setUp() {
-        out = new StringListImpl();
+        out = new IntegerListImpl();
     }
 
     @Test
     @DisplayName("добавление объекта в коллекцию")
     public void addTestNoParameter() {
-        String expected = "test";
-        String actual = out.add(expected);
+        Integer actual = out.add(expected);
 
         assertEquals(expected, actual);
     }
@@ -30,7 +29,7 @@ public class StringListImplTest {
     @Test
     @DisplayName("добавление объекта в коллекцию по индексу")
     public void addTestAtParameter() {
-        String actual = out.add(0, expected);
+        Integer actual = out.add(0, expected);
 
         assertEquals(expected, actual);
     }
@@ -38,16 +37,16 @@ public class StringListImplTest {
     @Test
     @DisplayName("добавляем элемент по индексу который выходит за пределы количества элементов")
     public void addTestThrow() {
-        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.add(-1, "test"));
-        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.add(15, "test"));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.add(-1, 5));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.add(15, 5));
     }
 
     @Test
     @DisplayName("замена объекта в коллекции по индексу")
     public void setTestAtParameter() {
         out.add(expected);
-        out.add("1");
-        String actual = out.set(0, expected);
+        out.add(1);
+        Integer actual = out.set(0, expected);
 
         assertEquals(expected, actual);
     }
@@ -55,7 +54,7 @@ public class StringListImplTest {
     @Test
     @DisplayName("замена объекта в коллекции по несуществующему индексу")
     public void setTestAtThrow() {
-        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.set(15, "wrong"));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.set(15, 5));
     }
 
     @Test
@@ -73,14 +72,14 @@ public class StringListImplTest {
         out.add(expected);
         out.remove(0);
 
-        assertEquals(out.size(), 0);
+        assertEquals(0, out.size());
     }
 
     @Test
     @DisplayName("удаление объекта с ошибкой")
     public void removeTestAtThrow() {
         assertThrows(NoSuchElementEx.class, () -> out.remove(-1));
-        assertThrows(NoSuchElementEx.class, () -> out.remove("wrong"));
+        assertThrows(NoSuchElementEx.class, () -> out.remove(new Integer(5)));
     }
 
     @Test
@@ -104,7 +103,7 @@ public class StringListImplTest {
     @Test
     @DisplayName("поиск объекта в коллекции и возврат индекса при отсутствии его")
     public void indexOfTestAtWrong() {
-        int actual = out.indexOf("wrong");
+        int actual = out.indexOf(5);
 
         assertEquals(-1, actual);
     }
@@ -112,7 +111,7 @@ public class StringListImplTest {
     @Test
     @DisplayName("поиск объекта в коллекции с конца и возврат индекса")
     public void lastIndexOfTest() {
-        out.add("0");
+        out.add(5);
         out.add(expected);
         int actual = out.lastIndexOf(expected);
 
@@ -122,9 +121,9 @@ public class StringListImplTest {
     @Test
     @DisplayName("получение объекта по индексу")
     public void getTest() {
-        out.add("0");
+        out.add(5);
         out.add(expected);
-        String actual = out.get(1);
+        Integer actual = out.get(1);
 
         assertEquals(expected, actual);
     }
@@ -139,10 +138,10 @@ public class StringListImplTest {
     @Test
     @DisplayName("сравнение коллекций")
     public void equalsTest() {
-        String a = "a";
-        String b = "b";
+        Integer a = 1;
+        Integer b = 2;
 
-        StringListImpl expected = new StringListImpl(20);
+        IntegerListImpl expected = new IntegerListImpl(20);
         expected.add(a);
         expected.add(b);
 
@@ -155,10 +154,10 @@ public class StringListImplTest {
     @Test
     @DisplayName("сравнение коллекций которые не равны")
     public void equalsTestAtWrong() {
-        String a = "a";
-        String b = "b";
+        Integer a = 1;
+        Integer b = 2;
 
-        StringListImpl expected = new StringListImpl();
+        IntegerListImpl expected = new IntegerListImpl();
         expected.add(a);
         expected.add(b);
 
@@ -174,8 +173,8 @@ public class StringListImplTest {
     @Test
     @DisplayName("возвращаем размер коллекции")
     public void sizeTest() {
-        String a = "a";
-        String b = "b";
+        Integer a = 1;
+        Integer b = 2;
 
         out.add(a);
         out.add(b);
@@ -206,7 +205,7 @@ public class StringListImplTest {
     @DisplayName("возвращаем массив")
     public void toArrayTest() {
         out.add(expected);
-        String[] actual = out.toArray();
+        Integer[] actual = out.toArray();
 
         assertTrue(actual.getClass().isArray());
     }
@@ -215,7 +214,7 @@ public class StringListImplTest {
     @DisplayName("проверяем динамический ли у нас массив")
     public void upSizeArrayTest() {
         for (int i = 0; i < 15; i++) {
-            out.add("" + i);
+            out.add(i);
         }
 
         assertEquals(15, out.size());
