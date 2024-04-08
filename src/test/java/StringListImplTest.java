@@ -38,8 +38,8 @@ public class StringListImplTest {
     @Test
     @DisplayName("добавляем элемент по индексу который выходит за пределы количества элементов")
     public void addTestThrow() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> out.add(-1, "test"));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> out.add(15, "test"));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.add(-1, "test"));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.add(15, "test"));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class StringListImplTest {
     @Test
     @DisplayName("замена объекта в коллекции по несуществующему индексу")
     public void setTestAtThrow() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> out.set(15, "wrong"));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.set(15, "wrong"));
     }
 
     @Test
