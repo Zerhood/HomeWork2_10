@@ -212,7 +212,7 @@ public class IntegerListImplTest {
 
     @Test
     @DisplayName("проверяем динамический ли у нас массив")
-    public void upSizeArrayTest() {
+    public void growTest() {
         for (int i = 0; i < 15; i++) {
             out.add(i);
         }
