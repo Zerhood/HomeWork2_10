@@ -1,8 +1,9 @@
+import exceptions.ArrayIndexOutOfBoundsEx;
+import exceptions.NoSuchElementEx;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,7 +55,7 @@ public class StringListImplTest {
     @Test
     @DisplayName("замена объекта в коллекции по несуществующему индексу")
     public void setTestAtThrow() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, ()-> out.set(15, "wrong"));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> out.set(15, "wrong"));
     }
 
     @Test
@@ -78,8 +79,8 @@ public class StringListImplTest {
     @Test
     @DisplayName("удаление объекта с ошибкой")
     public void removeTestAtThrow() {
-        assertThrows(NoSuchElementException.class, () -> out.remove(-1));
-        assertThrows(NoSuchElementException.class, () -> out.remove("wrong"));
+        assertThrows(NoSuchElementEx.class, () -> out.remove(-1));
+        assertThrows(NoSuchElementEx.class, () -> out.remove("wrong"));
     }
 
     @Test
@@ -131,8 +132,8 @@ public class StringListImplTest {
     @Test
     @DisplayName("получение объекта по индексу который выходит за пределы коллекции")
     public void getTestAtWrong() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> out.get(-1));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> out.get(15));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.get(-1));
+        assertThrows(ArrayIndexOutOfBoundsEx.class, () -> out.get(15));
     }
 
     @Test

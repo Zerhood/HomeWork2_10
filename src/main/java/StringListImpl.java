@@ -1,3 +1,6 @@
+import exceptions.ArrayIndexOutOfBoundsEx;
+import exceptions.NoSuchElementEx;
+
 import java.util.NoSuchElementException;
 
 public class StringListImpl implements StringList {
@@ -33,7 +36,7 @@ public class StringListImpl implements StringList {
     @Override
     public String add(int index, String item) {
         if (index < 0 || index > arrays.length) {
-            throw new ArrayIndexOutOfBoundsException("Индекс за пределами массива");
+            throw new ArrayIndexOutOfBoundsEx("Индекс за пределами массива");
         }
         if (arrays.length == size()) {
             arrays = upSizeArray(arrays);
@@ -51,7 +54,7 @@ public class StringListImpl implements StringList {
         if (index >= 0 && index <= arrays.length) {
             arrays[index] = item;
         } else {
-            throw new ArrayIndexOutOfBoundsException("Индекс за пределами массива");
+            throw new ArrayIndexOutOfBoundsEx("Индекс за пределами массива");
         }
         return item;
     }
@@ -69,7 +72,7 @@ public class StringListImpl implements StringList {
             }
         }
         if (isElement) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementEx("Элемент отсутствует!");
         }
         if (indexDeleteItem != -1) {
             arrays = copyArrayToShiftLeft(indexDeleteItem, arrays);
@@ -80,7 +83,7 @@ public class StringListImpl implements StringList {
     @Override
     public String remove(int index) {
         if (index < 0 || index > arrays.length) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementEx("Элемент отсутствует!");
         }
         String out = "";
         int indexDeleteItem = -1;
@@ -136,7 +139,7 @@ public class StringListImpl implements StringList {
         if (index >= 0 && index <= arrays.length) {
             return arrays[index];
         } else {
-            throw new ArrayIndexOutOfBoundsException();
+            throw new ArrayIndexOutOfBoundsEx("Индекс за пределами массива");
         }
     }
 
