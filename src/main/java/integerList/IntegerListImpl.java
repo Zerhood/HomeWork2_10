@@ -21,7 +21,7 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public Integer add(Integer item) {
         if (arrays.length == size()) {
-            arrays = upSizeArray(arrays);
+            arrays = grow(arrays);
         }
         for (int i = 0; i < arrays.length; i++) {
             if (arrays[i] == null) {
@@ -39,7 +39,7 @@ public class IntegerListImpl implements IntegerList {
             throw new ArrayIndexOutOfBoundsEx("Индекс за пределами массива");
         }
         if (arrays.length == size()) {
-            arrays = upSizeArray(arrays);
+            arrays = grow(arrays);
         }
         if (index >= 0 && index <= arrays.length) {
             arrays = copyArrayToShiftRight(index, arrays);
@@ -214,7 +214,7 @@ public class IntegerListImpl implements IntegerList {
         return in;
     }
 
-    private Integer[] upSizeArray(Integer[] in) {
+    private Integer[] grow(Integer[] in) {
         int newSize = in.length + in.length / 2;
         Integer[] out = new Integer[newSize];
         for (int i = 0; i < in.length; i++) {
@@ -224,7 +224,7 @@ public class IntegerListImpl implements IntegerList {
     }
 
     private int binarySearch(Integer[] in, int i) {
-        sortInsertion(in);
+        sortInsertion(in, size());
         int index = -1;
         int low = 0;
         int high = size();
@@ -243,15 +243,19 @@ public class IntegerListImpl implements IntegerList {
         return index;
     }
 
-    private void sortInsertion(Integer[] arr) {
-        for (int i = 1; i < size(); i++) {
-            int temp = arr[i];
-            int j = i;
-            while (j > 0 && arr[j - 1] >= temp) {
-                arr[j] = arr[j - 1];
-                j--;
-            }
-            arr[j] = temp;
+    private void sortInsertion(Integer[] arr, int size) {
+        if (size() <= 1) {
+            return;
         }
+        sortInsertion(arr, size() - 1);
+
+        int temp = arr[size - 1];
+        int j = size - 2;
+        while (j > 0 && arr[j] > temp) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = temp;
+
     }
 }
